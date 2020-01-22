@@ -86,17 +86,21 @@ int main(int argc, const char * const * argv)
   RCCHECK(rcl_wait(&wait_set, RCL_MS_TO_NS(50)))
 
   RCCHECK(rcl_parameter_client_get_pending_action(&wait_set, &parameter_client, &action))
-  if (action != RCL_SET_PARAMETERS) {
+  if (action != RCL_SET_PARAMETERS)
+  {
     printf("Error when RCL_SET_PARAMETERS is expected\n");
     return 1;
   }
   set_parameters_result = rcl_parameter_client_take_set_response(&parameter_client, &request_header);
   if ((NULL == set_parameters_result) || 
       (request_header.sequence_number != seq_num) || 
-      (set_parameters_result->size != num_params)) {
+      (set_parameters_result->size != num_params))
+  {
     printf("Error taking set parameter result\n");
     return 1;
-  } else {
+  }
+  else
+  {
     printf("Parameters set result: ");
     for (size_t i = 0; i < num_params; ++i) {
       printf("%s ", set_parameters_result->data[i].reason.data);
@@ -130,12 +134,16 @@ int main(int argc, const char * const * argv)
   parameter_values = rcl_parameter_client_take_get_response(&parameter_client, &request_header);
   if ((NULL == parameter_values) || 
       (request_header.sequence_number != seq_num) || 
-      (parameter_values->size != num_params)) {
+      (parameter_values->size != num_params)) 
+  {
     printf("Error taking parameter value\n");
     return 1;
-  } else {
+  } 
+  else 
+  {
     printf("Parameters values: ");
-    for (size_t i = 0; i < num_params; ++i) {
+    for (size_t i = 0; i < num_params; ++i) 
+    {
       switch (parameter_values->data[i].type)
       {
         case rcl_interfaces__msg__ParameterType__PARAMETER_BOOL:
