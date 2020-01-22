@@ -30,6 +30,7 @@ export_executable(addtwoints_client)
 export_executable(fibonacci_action_server)
 export_executable(fibonacci_action_client)
 export_executable(int32_multinode)
+export_executable(parameter_client)
 
 if(EXISTS ${CMAKE_BINARY_DIR}/temp_install/)
     install(
