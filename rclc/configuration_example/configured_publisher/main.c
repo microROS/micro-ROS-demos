@@ -43,16 +43,18 @@ int main(int argc, char * const argv[])
 	RCCHECK(rmw_uros_options_set_udp_address(argv[1], argv[2], rmw_options))
 	RCCHECK(rmw_uros_options_set_client_key(0xCAFEBABA, rmw_options))
 
+	size_t domain_id = (size_t)(argc == 4 ? atoi(argv[3]) : 0);
+	const char * node_name = "int32_configured_publisher_rclc";
+
+	rcl_init_options_set_domain_id(&init_options, domain_id);
+	printf("Initializing RCL '%s' with ROS Domain ID %ld...\n", node_name, domain_id);
+
 	// create init_options
 	RCCHECK(rclc_support_init_with_options(&support, 0, NULL, &init_options, &allocator));
 
 	// create node
 	rcl_node_t node;
-	rcl_node_options_t node_ops = rcl_node_get_default_options();
-	node_ops.domain_id = (size_t)(argc == 4 ? atoi(argv[3]) : 0);
-	const char * node_name = "int32_configured_publisher_rclc";
-	printf("Initializing node '%s' with ROS Domain ID %ld...\n",node_name, node_ops.domain_id);
-	RCCHECK(rclc_node_init_with_options(&node, node_name, "", &support, &node_ops));
+	RCCHECK(rclc_node_init_default(&node, node_name, "", &support));
 
 	// create publisher
 	RCCHECK(rclc_publisher_init_default(
